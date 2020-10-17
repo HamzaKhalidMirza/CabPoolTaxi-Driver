@@ -28,7 +28,6 @@
     <ion-row
       class="list"
       *ngFor="let request of relevantRequests"
-      [routerLink]="['/tabs/rides',request?.id]"
     >
       <ion-col size="12">
         <div class="header-container">
@@ -44,7 +43,7 @@
             <p>Seats Reserved: {{request?.seatsReserved}}</p>
           </div>
           <div>
-            <ion-button color="primary" slot="end" class="chat-btn">
+            <ion-button color="primary" slot="end" class="chat-btn" (click)="openChatRoom(request)">
               <ion-icon name="chatbox-ellipses-sharp"></ion-icon>
             </ion-button>  
           </div>

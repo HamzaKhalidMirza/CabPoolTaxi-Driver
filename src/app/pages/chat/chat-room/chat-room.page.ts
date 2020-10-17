@@ -62,14 +62,37 @@ export class ChatRoomPage implements OnInit {
       .receivedMessage()
       .subscribe(
         (chatMessage) => {
+          // console.log('Received: ', chatMessage);
           this.chatMessagesList.push(chatMessage);
           this.ionContent.scrollToBottom(300);
-          receiveObs.unsubscribe();
+          // receiveObs.unsubscribe();
         },
         (err) => {
           console.log(err);
         }
       );  
+  }
+
+  doRefresh(event) {
+    console.log('Begin async operation');
+    
+    this.chatSocketService
+      .getAllChatMessages({
+        driver: this.driverData.id,
+        client: this.clientData.id,
+      })
+      .subscribe(
+        (chatMessages) => {
+          console.log(chatMessages);
+          this.chatMessagesList = chatMessages;
+          this.ionContent.scrollToBottom(300);
+          event.target.complete();
+        },
+        (err) => {
+          console.log(err);
+          event.target.complete();
+        }
+      );
   }
 
   formInitializer() {

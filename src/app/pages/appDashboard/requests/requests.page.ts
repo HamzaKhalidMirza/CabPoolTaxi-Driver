@@ -5,6 +5,8 @@ import { AppError } from "src/common/error/app-error";
 import { BadInput } from "src/common/error/bad-input";
 import { NotFoundError } from "src/common/error/not-found-error";
 import { UnAuthorized } from "src/common/error/unauthorized-error";
+import { Router } from '@angular/router';
+import { AuthService } from 'src/common/sdk/core/auth.service';
 
 @Component({
   selector: 'app-requests',
@@ -17,7 +19,11 @@ export class RequestsPage implements OnInit {
   relevantRequests: any = [];
   isLoading: any;
 
-  constructor(private requestService: RequestService) {}
+  constructor(
+    private requestService: RequestService,
+    private authService: AuthService,
+    private router: Router
+    ) {}
 
   ngOnInit() {
   }
@@ -112,6 +118,14 @@ export class RequestsPage implements OnInit {
         }
       }
     );
+  }
+
+  async openChatRoom(request) {
+
+    await this.authService.clearFieldDataFromStorage('chat-clientData');
+    await this.authService.setFieldDataToStorage('chat-clientData', request.client);
+
+    this.router.navigateByUrl('chat-room');
   }
 
   getTripDayName(dateStr, locale) {

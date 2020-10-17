@@ -8,9 +8,12 @@
     <div class="header">
       <div class="header-img">
         <ion-avatar>
-          <ion-img
+          <ion-img *ngIf="!clientData?.photoAvatar"
             src="https://images.unsplash.com/photo-1518806118471-f28b20a1d79d?ixlib=rb-1
 .2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60"
+          ></ion-img>
+          <ion-img *ngIf="clientData?.photoAvatar"
+            [src]="clientData?.photoAvatar"
           ></ion-img>
         </ion-avatar>
       </div>
@@ -22,17 +25,24 @@
 </ion-header>
 
 <ion-content #ionContent>
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
   <div class="chat-page">
     <div class="msg-inbox">
       <div class="chats">
         <div class="msg-page">
           <div *ngFor="let message of chatMessagesList">
+
             <div class="received-chats" *ngIf="message.senderRole === 'client'">
               <div class="received-chats-img">
                 <ion-avatar>
-                  <ion-img
+                  <ion-img *ngIf="!clientData?.photoAvatar"
                     src="https://images.unsplash.com/photo-1518806118471-f28b20a1d79d?ixlib=rb-1
-    .2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60"
+      .2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60"
+                  ></ion-img>
+                  <ion-img *ngIf="clientData?.photoAvatar"
+                    [src]="clientData?.photoAvatar"
                   ></ion-img>
                 </ion-avatar>
               </div>
@@ -45,9 +55,22 @@
             </div>
 
             <div class="outgoing-chats" *ngIf="message.senderRole === 'driver'">
-              <div class="outgoing-chats-msg">
-                <p>{{message?.message}}</p>
-                <span class="time">{{setDateAndTime(message?.createdAt)}}</span>
+              <div class="outgoing-chats-img">
+                <ion-avatar>
+                  <ion-img *ngIf="!driverData?.photoAvatar"
+                    src="https://images.unsplash.com/photo-1518806118471-f28b20a1d79d?ixlib=rb-1
+      .2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60"
+                  ></ion-img>
+                  <ion-img *ngIf="driverData?.photoAvatar"
+                    [src]="driverData?.photoAvatar"
+                  ></ion-img>
+                </ion-avatar>
+              </div>
+              <div class="outgoing-msg">
+                <div class="outgoing-msg-inbox">
+                  <p>{{message?.message}}</p>
+                  <span class="time">{{setDateAndTime(message?.createdAt)}}</span>
+                </div>
               </div>
             </div>
           </div>

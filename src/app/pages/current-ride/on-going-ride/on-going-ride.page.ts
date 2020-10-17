@@ -436,22 +436,25 @@ export class OnGoingRidePage implements OnInit {
             })
             .then((toast) => {
               toast.present();
-            })
-            .catch((err) => {
-              console.log(err);
-            });
-
-          setTimeout(() => {
-            this.navCtrl
+              this.currentLocationObs.unsubscribe();
+              this.driverSocketObs.unsubscribe();
+              this.navCtrl
               .pop()
               .then(() => {
                 this.scheduleOnGoingTripService.scheduledBookings = [];
-                this.router.navigateByUrl("/tabs");
+                  this.router.navigateByUrl('/tabs/rides');
               })
               .catch((err) => {
                 console.log(err);
               });
-          }, 3000);
+    
+            })
+            .catch((err) => {
+              console.log(err);
+            });
+            
+          // setTimeout(() => {
+          // }, 3000);
         },
         (err) => {
           console.log(err);
